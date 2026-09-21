@@ -45,12 +45,8 @@
 %endif
 %endif
 
-# OBS (build.opensuse.org) adaptation: disable bindings not available in OBS
-%if 0%{?disturl:1}
-%global WITH_MONO 0
-%global WITH_QT3 0
+# Qt4 was removed from Fedora; disable qt4 bindings
 %global WITH_QT4 0
-%endif
 
 %if 0%{?fedora} == 34 || 0%{?rhel} >= 9
 # https://bugzilla.redhat.com/show_bug.cgi?id=1907727
