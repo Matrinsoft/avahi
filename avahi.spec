@@ -450,9 +450,6 @@ Requires:         %{name}-libs%{?_isa} = %{version}-%{release}
 
 rm -fv docs/INSTALL
 
-# gettext >= 0.22 dropped the AM_GNU_GETTEXT_VERSION macro
-sed -i '/AM_GNU_GETTEXT_VERSION/d' configure.ac
-
 # Create two sysusers.d config files
 cat >avahi.sysusers.conf <<EOF
 u avahi 70 'Avahi mDNS/DNS-SD Stack' %{_localstatedir}/run/avahi-daemon -
@@ -467,6 +464,13 @@ EOF
 ## * kills rpaths
 ## * fixes -stack-protector flags (once gcc_stack_protect.m4 is removed)
 rm -fv missing common/gcc_stack_protect.m4
+
+# gettext >= 0.22: generate the gettext m4 macros that autogen.sh's
+# gettextize hack no longer provides, and drop the removed version macro
+autopoint -f
+cp -f gettext.m4 iconv.m4 lib-ld.m4 lib-link.m4 lib-prefix.m4 nls.m4 po.m4 progtest.m4 common/ 2>/dev/null || true
+sed -i '/AM_GNU_GETTEXT_VERSION/d' configure.ac
+
 NOCONFIGURE=1 ./autogen.sh
 
 %configure \
