@@ -450,6 +450,9 @@ Requires:         %{name}-libs%{?_isa} = %{version}-%{release}
 
 rm -fv docs/INSTALL
 
+# gettext >= 0.22 dropped the AM_GNU_GETTEXT_VERSION macro
+sed -i '/AM_GNU_GETTEXT_VERSION/d' configure.ac
+
 # Create two sysusers.d config files
 cat >avahi.sysusers.conf <<EOF
 u avahi 70 'Avahi mDNS/DNS-SD Stack' %{_localstatedir}/run/avahi-daemon -
